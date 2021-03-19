@@ -8,6 +8,7 @@ using namespace std;
 
 double thetaAngle;
 double gunAngle;
+double gunBodyAngle;
 
 #define pi (2*acos(0.0))
 
@@ -398,7 +399,9 @@ void drawOffline()
         glPopMatrix();
 
 	}
-	glRotatef(gunAngle,0,1,0);
+
+	//attachment hemisphere for the gun
+	glRotatef(gunAngle,1,0,0);
 	{
         glPushMatrix();
 
@@ -409,22 +412,24 @@ void drawOffline()
 
 
 	}
+	//top hemisphere for the gun 
 	{
 		glPushMatrix();
 		glTranslatef(0,40,0);
-		glRotatef(-90,1,0,0);
+		glRotatef(-90+gunBodyAngle,1,0,0);
 		drawLowerHemisphere(10,30,40);
 
 
 		glPopMatrix();
 	}
-
+	//body for the gun
 	{
 		glPushMatrix();
 		
 	
 		glTranslatef(0,40,0);
-		glRotatef(-90,1,0,0);		
+		glRotatef(-90+gunBodyAngle,1,0,0);	
+		double current = -90+gunBodyAngle;	
 		drawCyllinder(30,10,30,2);
 		
 		// glRotatef(-90,1,0,0);
@@ -432,8 +437,10 @@ void drawOffline()
 		glPopMatrix();
 
 	}
+	//end part of the
 	{
 		glPushMatrix();
+		glRotatef(gunBodyAngle,1,0,0);
 		glTranslatef(0,70,0);
 		glRotatef(-90,1,0,0);
 		
@@ -518,6 +525,16 @@ void keyboardListener(unsigned char key, int x,int y){
 			break;
 		case 'e':
 			gunAngle+=1;
+			break;
+		case 'r':
+			gunAngle-=1;
+			break;
+		case 'a':
+			gunBodyAngle+=1;
+			break;
+		case 's':
+			gunBodyAngle-=1;
+			break;
 		default:
 			break;
 	}
@@ -655,6 +672,7 @@ void init(){
 	angle=0;
 	thetaAngle=0;
 	gunAngle=0;
+	gunBodyAngle=0;
 
 	//clear the screen
 	glClearColor(0,0,0,0);
