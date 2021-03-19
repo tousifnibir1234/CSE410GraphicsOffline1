@@ -412,52 +412,31 @@ void drawOffline()
 
 
 	}
-	//top hemisphere for the gun 
+	glTranslatef(0,40,0);
+	glRotatef(gunBodyAngle,1,0,0);
+
 	{
+		//top hemisphere for the gun 
 		glPushMatrix();
-		glTranslatef(0,40,0);
-		glRotatef(-90+gunBodyAngle,1,0,0);
+
+		glRotatef(-90,1,0,0);
 		drawLowerHemisphere(10,30,40);
 
-
-		glPopMatrix();
-	}
-	//body for the gun
-	{
-		glPushMatrix();
-		
-	
-		glTranslatef(0,40,0);
-		glRotatef(-90+gunBodyAngle,1,0,0);	
-		double current = -90+gunBodyAngle;	
+		//body part of the gun	
 		drawCyllinder(30,10,30,2);
+		glRotatef(90,1,0,0);
 		
-		// glRotatef(-90,1,0,0);
-		// drawCyllinderEnd(15,25,15,30,40);
-		glPopMatrix();
 
-	}
-	//end part of the
-	{
-		glPushMatrix();
-		glRotatef(gunBodyAngle,1,0,0);
-		glTranslatef(0,70,0);
+		//end point of the gun
+		glTranslatef(0,30,0);
 		glRotatef(-90,1,0,0);
 		
+		// point p = rotate()	
 		drawCyllinderEnd(10,10,5,30,10);
 		glPopMatrix();
 
 	}
-	// {
-	// 	glPushMatrix();
-	// 	glTranslatef(0,90,0);
-	// 	drawCyllinderEnd(10,10,15,30,40);
-
-	// }
-		
-
 	
-
 
 }
 
