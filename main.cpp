@@ -390,6 +390,7 @@ void drawSphere(double radius,int slices,int stacks)
 }
 void drawOffline()
 {  
+	glPushMatrix();
 
 	glRotatef(thetaAngle,0,0,1);
 	{
@@ -436,9 +437,14 @@ void drawOffline()
 		
 		// point p = rotate()	
 		drawCyllinderEnd(10,5,5,80,10);
+		
 		glPopMatrix();
 
 	}
+	glPopMatrix();
+	glTranslatef(0,150,0);
+	glRotatef(90,1,0,0);
+	drawSquare(30);
 	
 
 }
@@ -500,28 +506,46 @@ void keyboardListener(unsigned char key, int x,int y){
 			break;
 
 		case 'q':
-			thetaAngle+=1;
+			if (thetaAngle+1<45){
+				thetaAngle+=1;
+			}
 			break;
 		case  'w':
-			thetaAngle-=1;
+			if(thetaAngle-1>-45)
+			{
+				thetaAngle-=1;
+			}
 			break;
 		case 'e':
-			gunAngle+=1;
+			if (gunAngle+1<45){
+				gunAngle+=1;
+			}
 			break;
 		case 'r':
-			gunAngle-=1;
+			if (gunAngle-1>-45){
+				gunAngle-=1;
+			}
 			break;
 		case 'a':
-			gunBodyAngle+=1;
+			if (gunBodyAngle+1<30){
+				gunBodyAngle+=1;
+			}
 			break;
 		case 's':
-			gunBodyAngle-=1;
+			if(gunBodyAngle-1>-30){
+				gunBodyAngle-=1;
+			}
 			break;
 		case 'd':
+			if(rotateAxis +1<20){
 			rotateAxis+=1;
+			}
+			
 			break;
 		case 'f':
+			if(rotateAxis-1 >-20){
 			rotateAxis-=1;
+			}
 			break;
 		default:
 			break;
@@ -569,12 +593,13 @@ void specialKeyListener(int key, int x,int y){
 void mouseListener(int button, int state, int x, int y){	//x, y is the x-y of the screen (2D)
 	switch(button){
 		case GLUT_LEFT_BUTTON:
-			if(state == GLUT_DOWN){		// 2 times?? in ONE click? -- solution is checking DOWN or UP
-				drawaxes=1-drawaxes;
-			}
+			
 			break;
 
 		case GLUT_RIGHT_BUTTON:
+			if(state == GLUT_DOWN){		// 2 times?? in ONE click? -- solution is checking DOWN or UP
+				drawaxes=1-drawaxes;
+			}
 			//........
 			break;
 

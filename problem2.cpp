@@ -64,6 +64,13 @@ point add(point a, point b)
 	temp.z = a.z + b.z;
 	return temp;
 }
+point withScalar(point a ,point vel)
+{
+    a.x= a.x+scalar*vel.x;
+    a.y= a.y+scalar*vel.y;
+    return a;
+
+}
 double getDistance(point a ){
     return sqrt(a.x*a.x+a.y*a.y);
 }
@@ -73,12 +80,12 @@ double getPointDistance(point a,point b)
 }
 bool collisionChecker(point a ,point b)
 {
-    if (getPointDistance(a,b)< 2*bubbleRadius)
+    if (getPointDistance(a,b)<2*bubbleRadius)
         return true;
     return false;
 }
 bool checkInsideCircle(point a){
-    if (getDistance(a) <= fabs(centerCircleRadius-bubbleRadius))
+    if (getDistance(a) <=fabs(centerCircleRadius-bubbleRadius))
         return true;
     return false;
 }
@@ -132,18 +139,26 @@ point bubbleReflectionFormula(point vel, point normal)
 void bubbleCollision(point  bub1, point bub2 , int index1,int index2 )
 {
     if(collisionChecker(bub1,bub2))
+        return;
+    point p1=add(bub1,velocity[index1]);
+    point p2=add(bub2,velocity[index2]);
+    if(collisionChecker(p1,p2))
     {
         cout<<" bubble  " << index1 <<  "and  bubble "<<index2<<" will collide"<<endl;
+        cout<<"dist is ";getPointDistance(bub1,bub2); cout<<endl;
         bub1.print();
-    }
-    // point p1=add(bub1,velocity[index1]);
-    // point p2=add(bub2,velocity[index2]);
+        
 
-    // point normal1=sub(p1,p2);
-    // point normal2=sub(p2,p1);
+        point normal1=sub(p1,p2);
+        point normal2=sub(p2,p1);
     
-    // velocity[index1]= bubbleReflectionFormula(velocity[index1],normal1);
-    // velocity[index2]= bubbleReflectionFormula(velocity[index2],normal2);
+        velocity[index1]= bubbleReflectionFormula(velocity[index1],normal1);
+        
+        velocity[index2]= bubbleReflectionFormula(velocity[index2],normal2);
+    
+    
+
+    }
 }
 void drawAxes()
 {
@@ -373,10 +388,15 @@ void keyboardListener(unsigned char key, int x,int y){
 void specialKeyListener(int key, int x,int y){
 	switch(key){
 		case GLUT_KEY_DOWN:		//down arrow key
-			scalar-=0.1;
+			if(scalar-0.1 >0)
+			{
+				scalar-=0.1;
+			}
 			break;
 		case GLUT_KEY_UP:		// up arrow key
-			scalar+=0.1;
+			if(scalar+0.1<2){
+				scalar+=0.1;
+			}
             break;
 
 		case GLUT_KEY_RIGHT:
@@ -484,9 +504,10 @@ void display(){
 }
 
 void animate(){
+    bool checker =false;
     if(!pause){
         int t2 = (int) (clock()- t);
-        if (t2>100000  && bubbleUp<2)
+        if (t2>10000  && bubbleUp<5)
         {
             // cout<< t2 <<" is up" <<endl;
             t=clock();
@@ -517,18 +538,32 @@ void animate(){
                 for (int  j=0 ;j<bubbleUp  ;j++)
                 {
                     if (insideCircle[j] && j!=i){
-                        // cout<<"check collission for "<< i << " "<< j<<endl;
-                        bubbleCollision(bubbles[i],bubbles[j],i,j);
 
+                        bubbleCollision(bubbles[i],bubbles[j],i,j);
+                        // while(collisionChecker(bubbles[i],bubbles[j]))
+                        // {
+                        //     checker=true;
+                        //     bubbles[i].x +=scalar*velocity[i].x;
+                        //     bubbles[i].y +=scalar*velocity[i].y;
+
+                        // } 
                     }
                     
                 }
             }
 
+            
             bubbles[i].x +=scalar*velocity[i].x;
             bubbles[i].y +=scalar*velocity[i].y;
-
+            if(insideCircle[i]==true  && !checkInsideCircle(bubbles[i]))
+            {
+                insideCircle[i] =true;
+                continue;
+            }
+                
             insideCircle[i]=checkInsideCircle(bubbles[i]);
+            
+
 
 
         }
