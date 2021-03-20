@@ -516,23 +516,7 @@ void animate(){
         }
         for (int i=0;i<bubbleUp;i++)
         {
-            point temp;
-            temp.x = bubbles[i].x+ scalar*velocity[i].x;
-            temp.y = bubbles[i].y+scalar*velocity[i].y;
-            temp.z=0;
-            if( fabs(temp.x) > fabs(lenOfSquare-bubbleRadius)){
-                velocity[i].x= (- velocity[i].x);
-            }
-            if( fabs(temp.y) > fabs(lenOfSquare-bubbleRadius)){
-                velocity[i].y= (- velocity[i].y);
-            }
-            if (checkInsideCircle(bubbles[i]) && !checkInsideCircle(temp))// circle is inside and  after padding it will go outside
-                                                                          //so collision occurs on the wall
-            {
-                // cout<<i<< "will be reflected "<<endl;
-                // cout<<i<<" bubble will be inside " <<temp.x << "  temp.y"<<endl;
-                velocity[i] =reflection(bubbles[i],velocity[i]);
-            }
+            
 
             if(insideCircle[i]){
                 for (int  j=0 ;j<bubbleUp  ;j++)
@@ -551,15 +535,31 @@ void animate(){
                     
                 }
             }
-
+			point temp;
+            temp.x = bubbles[i].x+ scalar*velocity[i].x;
+            temp.y = bubbles[i].y+scalar*velocity[i].y;
+            temp.z=0;
+            if( fabs(temp.x) > fabs(lenOfSquare-bubbleRadius)){
+                velocity[i].x= (- velocity[i].x);
+            }
+            if( fabs(temp.y) > fabs(lenOfSquare-bubbleRadius)){
+                velocity[i].y= (- velocity[i].y);
+            }
+            if (checkInsideCircle(bubbles[i]) && !checkInsideCircle(temp))// circle is inside and  after padding it will go outside
+                                                                          //so collision occurs on the wall
+            {
+                // cout<<i<< "will be reflected "<<endl;
+                // cout<<i<<" bubble will be inside " <<temp.x << "  temp.y"<<endl;
+                velocity[i] =reflection(bubbles[i],velocity[i]);
+            }
             
             bubbles[i].x +=scalar*velocity[i].x;
             bubbles[i].y +=scalar*velocity[i].y;
-            if(insideCircle[i]==true  && !checkInsideCircle(bubbles[i]))
-            {
-                insideCircle[i] =true;
-                continue;
-            }
+            // if(insideCircle[i]==true  && !checkInsideCircle(bubbles[i]))
+            // {
+            //     insideCircle[i] =true;
+            //     continue;
+            // }
                 
             insideCircle[i]=checkInsideCircle(bubbles[i]);
             
