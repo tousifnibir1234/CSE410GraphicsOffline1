@@ -9,6 +9,7 @@ using namespace std;
 double thetaAngle;
 double gunAngle;
 double gunBodyAngle;
+double rotateAxis;
 
 #define pi (2*acos(0.0))
 
@@ -395,7 +396,7 @@ void drawOffline()
         glPushMatrix();
 		glRotatef(90,1,0,0);
 
-		drawUpperHemisphere(30,30,40);
+		drawUpperHemisphere(20,80,80);
         glPopMatrix();
 
 	}
@@ -407,32 +408,34 @@ void drawOffline()
 
 		glRotatef(90,1,0,0);
         
-		drawLowerHemisphere(30,30,40);
-        glPopMatrix();
+		drawLowerHemisphere(20,80,80);
+        glPopMatrix();	
 
 
 	}
-	glTranslatef(0,40,0);
+
+	glTranslatef(0,25,0);
 	glRotatef(gunBodyAngle,1,0,0);
+	glRotatef(rotateAxis,0,1,0);
 
 	{
 		//top hemisphere for the gun 
 		glPushMatrix();
 
 		glRotatef(-90,1,0,0);
-		drawLowerHemisphere(10,30,40);
+		drawLowerHemisphere(5,80,80);
 
 		//body part of the gun	
-		drawCyllinder(30,10,30,2);
+		drawCyllinder(60,5,80,80);
 		glRotatef(90,1,0,0);
 		
 
 		//end point of the gun
-		glTranslatef(0,30,0);
+		glTranslatef(0,60,0);
 		glRotatef(-90,1,0,0);
 		
 		// point p = rotate()	
-		drawCyllinderEnd(10,10,5,30,10);
+		drawCyllinderEnd(10,5,5,80,10);
 		glPopMatrix();
 
 	}
@@ -513,6 +516,12 @@ void keyboardListener(unsigned char key, int x,int y){
 			break;
 		case 's':
 			gunBodyAngle-=1;
+			break;
+		case 'd':
+			rotateAxis+=1;
+			break;
+		case 'f':
+			rotateAxis-=1;
 			break;
 		default:
 			break;
@@ -652,6 +661,7 @@ void init(){
 	thetaAngle=0;
 	gunAngle=0;
 	gunBodyAngle=0;
+	rotateAxis=0;
 
 	//clear the screen
 	glClearColor(0,0,0,0);
